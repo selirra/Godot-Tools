@@ -100,6 +100,12 @@ public partial class GlobalVariables : Node
     /// </summary>
     private void Deserialize(){
         try{
+            if (!FileAccess.FileExists(filePath)){
+                GD.PrintErr($"{filePath} does not exist, creating a new one.");
+                Reset();
+                return;
+            }
+
             using (var file = FileAccess.Open(filePath, FileAccess.ModeFlags.Read)){
                 var json = file.GetAsText();
                 var properties = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(json);
